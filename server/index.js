@@ -34,8 +34,8 @@ app.use(morgan('combined'));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+ windowMs: 15 * 60 * 1000,
+ max: 100,
 });
 app.use(limiter);
 
@@ -52,7 +52,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// API Routes
+//API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/contact', contactRoutes);
@@ -69,9 +69,9 @@ app.use((err, req, res, next) => {
 });
 
 // 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
-});
+// app.use('*', (req, res) => {
+//   res.status(404).json({ error: 'Route not found' });
+// });
 
 // Initialize database and start server
 initializeDatabase()

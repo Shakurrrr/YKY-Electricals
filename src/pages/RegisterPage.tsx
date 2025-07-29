@@ -51,8 +51,14 @@ const RegisterPage: React.FC = () => {
         lastName: formData.lastName
       });
       navigate('/dashboard');
-    } catch (error: any) {
-      setError(error.message || 'Failed to create account');
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        'Registration failed';
+      setError(message);
+      throw new Error(message);
     } finally {
       setIsLoading(false);
     }
