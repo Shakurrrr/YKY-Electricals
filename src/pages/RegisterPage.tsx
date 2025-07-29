@@ -50,15 +50,8 @@ const RegisterPage: React.FC = () => {
         firstName: formData.firstName,
         lastName: formData.lastName
       });
-      navigate('/dashboard');
     } catch (err: any) {
-      const message =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        err?.message ||
-        'Registration failed';
-      setError(message);
-      throw new Error(message);
+      setError(err.message || 'Registration failed');
     } finally {
       setIsLoading(false);
     }

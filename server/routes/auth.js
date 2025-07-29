@@ -19,6 +19,12 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 6 characters long' });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Please provide a valid email address' });
+    }
+
     const db = getDatabase();
 
     db.get('SELECT id FROM users WHERE email = ?', [email], async (err, row) => {
@@ -28,7 +34,7 @@ router.post('/register', async (req, res) => {
       }
 
       if (row) {
-        return res.status(400).json({ message: 'User already exists with this email' });
+        return res.status(400).json({ error: 'User already exists with this email' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);

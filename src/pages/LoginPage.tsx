@@ -31,7 +31,6 @@ const LoginPage: React.FC = () => {
 
     try {
       await signIn(formData.email, formData.password);
-      navigate('/dashboard');
     } catch (error: any) {
       setError(error.message || 'Failed to sign in');
     } finally {

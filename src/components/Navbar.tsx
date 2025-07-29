@@ -11,7 +11,6 @@ const Navbar: React.FC = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/');
     setShowUserMenu(false);
   };
 

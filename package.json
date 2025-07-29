@@ -6,10 +6,14 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "cd server && node index.js",
-    "dev:full": "concurrently \"npm run dev\" \"npm run dev:server\"",
+    "dev:full": "concurrently \"npm run dev\" \"npm run dev:server\" --names \"client,server\" --prefix-colors \"blue,green\"",
     "build": "vite build",
+    "build:server": "echo 'Server build not needed for Node.js'",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm run dev:full",
+    "clean": "rm -rf dist node_modules/.vite",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "axios": "^1.11.0",

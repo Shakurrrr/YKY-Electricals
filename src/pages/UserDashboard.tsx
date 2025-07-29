@@ -22,9 +22,10 @@ const UserDashboard: React.FC = () => {
   useEffect(() => {
 
     const fetchBookings = async () => {
+      setLoading(true);
       try {
         const response = await bookingsAPI.getMyBookings();
-        setBookings(response.bookings.map((booking: any) => ({
+        setBookings(response.bookings?.map((booking: any) => ({
           id: booking.id.toString(),
           serviceType: booking.service_type,
           preferredDate: booking.preferred_date,
@@ -32,7 +33,7 @@ const UserDashboard: React.FC = () => {
           status: booking.status,
           adminComment: booking.admin_comment,
           createdAt: booking.created_at
-        })));
+        })) || []);
       } catch (error) {
         console.error('Failed to fetch bookings:', error);
       } finally {

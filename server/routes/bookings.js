@@ -15,6 +15,27 @@ router.post('/', authenticateToken, (req, res) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Please provide a valid email address' });
+    }
+
+    // Validate phone format (basic validation)
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+      return res.status(400).json({ error: 'Please provide a valid phone number' });
+    }
+
+    // Validate preferred date is not in the past
+    const preferredDateTime = new Date(preferredDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (preferredDateTime < today) {
+      return res.status(400).json({ error: 'Preferred date cannot be in the past' });
+    }
+
     const db = getDatabase();
 
     db.run(
@@ -25,6 +46,13 @@ router.post('/', authenticateToken, (req, res) => {
         if (err) {
           console.error('Database error:', err);
           return res.status(500).json({ error: 'Failed to create booking' });
+        }
+
+        // Send email notification (optional - don't fail if email fails)
+        try {
+          // You can add email notification here if needed
+        } catch (emailError) {
+          console.warn('Email notification failed:', emailError);
         }
 
         res.status(201).json({

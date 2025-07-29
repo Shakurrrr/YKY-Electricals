@@ -55,10 +55,11 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
 
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         // Fetch bookings
         const bookingsResponse = await bookingsAPI.getAllBookings();
-        setBookings(bookingsResponse.bookings.map((booking: any) => ({
+        setBookings(bookingsResponse.bookings?.map((booking: any) => ({
           id: booking.id.toString(),
           name: booking.name,
           email: booking.email,
@@ -69,19 +70,21 @@ const AdminDashboard: React.FC = () => {
           status: booking.status,
           adminComment: booking.admin_comment,
           createdAt: booking.created_at
-        })));
+        })) || []);
 
         // Fetch projects
         const projectsResponse = await projectsAPI.getAll();
-        setProjects(projectsResponse.projects.map((project: any) => ({
+        setProjects(projectsResponse.projects?.map((project: any) => ({
           id: project.id.toString(),
           title: project.title,
           category: project.category,
           image: project.image_url || 'https://images.pexels.com/photos/4207892/pexels-photo-4207892.jpeg?auto=compress&cs=tinysrgb&w=800',
           description: project.description
-        })));
+        })) || []);
       } catch (error) {
         console.error('Failed to fetch data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 

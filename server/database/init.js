@@ -46,6 +46,8 @@ const createTables = () => {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`,
+      `CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`,
+      `CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)`,
       `CREATE TABLE IF NOT EXISTS bookings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
@@ -61,6 +63,9 @@ const createTables = () => {
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users (id)
       )`,
+      `CREATE INDEX IF NOT EXISTS idx_bookings_user_id ON bookings(user_id)`,
+      `CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status)`,
+      `CREATE INDEX IF NOT EXISTS idx_bookings_created_at ON bookings(created_at)`,
       `CREATE TABLE IF NOT EXISTS contact_messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -69,6 +74,8 @@ const createTables = () => {
         status TEXT DEFAULT 'unread' CHECK(status IN ('unread', 'read', 'replied')),
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`,
+      `CREATE INDEX IF NOT EXISTS idx_contact_status ON contact_messages(status)`,
+      `CREATE INDEX IF NOT EXISTS idx_contact_created_at ON contact_messages(created_at)`,
       `CREATE TABLE IF NOT EXISTS projects (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
@@ -78,6 +85,8 @@ const createTables = () => {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`
+      `CREATE INDEX IF NOT EXISTS idx_projects_category ON projects(category)`,
+      `CREATE INDEX IF NOT EXISTS idx_projects_created_at ON projects(created_at)`
     ];
 
     let completed = 0;
@@ -90,6 +99,7 @@ const createTables = () => {
         }
         completed++;
         if (completed === tables.length) {
+          console.log('📊 Database tables and indexes created successfully');
           resolve();
         }
       });

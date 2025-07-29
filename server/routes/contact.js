@@ -15,6 +15,21 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Please provide a valid email address' });
+    }
+
+    // Validate message length
+    if (message.length < 10) {
+      return res.status(400).json({ error: 'Message must be at least 10 characters long' });
+    }
+
+    if (message.length > 1000) {
+      return res.status(400).json({ error: 'Message must be less than 1000 characters' });
+    }
+
     const db = getDatabase();
 
     db.run(
